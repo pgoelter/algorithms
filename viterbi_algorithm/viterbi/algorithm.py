@@ -20,6 +20,7 @@ def viterbi(transition_matrix, initial_state_matrix, emission_matrix, observatio
 
     # Initialize accumulated probability and backtracking matrices
     acc_probability_matrix = np.zeros((n_states, N))
+
     posteriori_mat = np.zeros((n_states, N))
 
     backtracking_matrix = np.zeros((n_states, N - 1)).astype(np.int32)
@@ -38,17 +39,20 @@ def viterbi(transition_matrix, initial_state_matrix, emission_matrix, observatio
             acc_probability_matrix[i, n] = (
                 np.max(temp_product) * emission_matrix[i, observations[n]]
             )
+
             posteriori_mat[i, n] = (
                 np.sum(temp_product) * emission_matrix[i, observations[n]]
             )
-            # print(np.sum(temp_product) * emission_matrix[i, observations[n]])
+
             backtracking_matrix[i, n - 1] = np.argmax(temp_product)
-    print(posteriori_mat)
+
     # Backtracking
     opt_state_sequence = np.zeros(N).astype(np.int32)
     opt_state_sequence[-1] = np.argmax(acc_probability_matrix[:, -1])
+
     for n in range(N - 2, -1, -1):
-        opt_state_sequence[n] = backtracking_matrix[int(opt_state_sequence[n + 1]), n]
+        opt_state_sequence[n] = backtracking_matrix[int(
+            opt_state_sequence[n + 1]), n]
 
     return opt_state_sequence, acc_probability_matrix, backtracking_matrix
 
@@ -71,12 +75,18 @@ def viterbi_log(transition_matrix, initial_state_matrix, emission_matrix, observ
     N = len(observations)  # Length of observation sequence
 
     transition_log = np.log(transition_matrix)
+
     initial_log = np.log(initial_state_matrix)
+
     emission_log = np.log(emission_matrix)
 
     # Initialize accumulated probability and backtracking matrices
     acc_probability_log = np.zeros((n_states, N))
+
+    posteriori_mat = np.zeros((n_states, N))
+
     backtracking_matrix = np.zeros((n_states, N - 1)).astype(np.int32)
+
     acc_probability_log[:, 0] = initial_log + emission_log[:, observations[0]]
 
     # Calculate accumulated probability and backtracking
@@ -86,12 +96,18 @@ def viterbi_log(transition_matrix, initial_state_matrix, emission_matrix, observ
             acc_probability_log[i, n] = (
                 np.max(temp_sum) + emission_log[i, observations[n]]
             )
+
+            posteriori_mat[i, n] = (
+                np.sum(temp_sum) * emission_matrix[i, observations[n]]
+            )
+
             backtracking_matrix[i, n - 1] = np.argmax(temp_sum)
 
     # Backtracking
     opt_state_sequence = np.zeros(N).astype(np.int32)
     opt_state_sequence[-1] = np.argmax(acc_probability_log[:, -1])
     for n in range(N - 2, -1, -1):
-        opt_state_sequence[n] = backtracking_matrix[int(opt_state_sequence[n + 1]), n]
+        opt_state_sequence[n] = backtracking_matrix[int(
+            opt_state_sequence[n + 1]), n]
 
     return opt_state_sequence, acc_probability_log, backtracking_matrix
