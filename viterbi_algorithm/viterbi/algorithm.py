@@ -1,5 +1,4 @@
 import numpy as np
-from numba import jit
 
 
 def viterbi(transition_matrix, initial_state_matrix, emission_matrix, observations):
