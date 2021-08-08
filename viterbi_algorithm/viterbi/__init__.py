@@ -1,4 +1,4 @@
-from .algorithm import viterbi, viterbi_log
+from .algorithm import viterbi, viterbi_logarithm, posteriori
 from .utils import (
     convert_to_viterbi_input,
     convert_string,

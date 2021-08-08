@@ -21,8 +21,9 @@ def read_lines_from_textfile(filename: str) -> List[str]:
     return lines
 
 
-def convert_to_viterbi_input(s: str) -> List[int]:
-    """Convert a string to a list of integers. This only works in the context of sequences of dice numbers. We substract 1 as the indexing start with 0 not 1."""
+def convert_to_viterbi_input(s: str) -> np.ndarray:
+    """Convert a string to a list of integers. This only works in the context of sequences of dice numbers.
+    We substract 1 as the indexing start with 0 not 1."""
     return np.array(convert_string(s)) - 1
 
 
