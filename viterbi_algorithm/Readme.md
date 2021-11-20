@@ -1,5 +1,5 @@
 # Übung 3 - Bioinformatik
-Philipp Gölter - 3642550
+
 ## Files und Ordner
 ````
 viterbi_algorithm
